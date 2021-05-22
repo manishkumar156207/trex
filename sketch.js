@@ -12,9 +12,6 @@ var score=0;
 
 var gameOver, restart;
 
-array = [ ] ;
-
-
 
 
 function preload(){
@@ -32,12 +29,12 @@ function preload(){
   obstacle5 = loadImage("obstacle5.png");
   obstacle6 = loadImage("obstacle6.png");
   
-  gameOverImg = loadImage("download.png");
-  restartImg = loadImage("pngtree-green-fault-style-restart-icon-png-image_1606602-removebg-preview.png");
+  gameOverImg = loadImage("gameOver.png");
+  restartImg = loadImage("restart.png");
 }
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(600, 200);
   
   trex = createSprite(50,180,20,50);
   
@@ -48,17 +45,16 @@ function setup() {
   ground = createSprite(200,180,400,20);
   ground.addImage("ground",groundImage);
   ground.x = ground.width /2;
-  ground.velocityX = -(6 + 3*score/100);
+  ground.velocityX = -(6 + 2*score/300);
   
-  gameOver = createSprite(300,80);
+  gameOver = createSprite(300,100);
   gameOver.addImage(gameOverImg);
   
   restart = createSprite(300,140);
   restart.addImage(restartImg);
-
-  gameOver.scale = 0.3;
-  restart.scale = 0.3;
-  obstacle1.scale = 0.1;
+  
+  gameOver.scale = 0.5;
+  restart.scale = 0.5;
 
   gameOver.visible = false;
   restart.visible = false;
@@ -74,26 +70,19 @@ function setup() {
 
 function draw() {
   //trex.debug = true;
-  background(255);
+  background("skyblue");
   text("Score: "+ score, 500,50);
   
   if (gameState===PLAY){
     score = score + Math.round(getFrameRate()/60);
-    ground.velocityX = -(6 + 3*score/100);
-  
-    if((touches.length > 0 || keyDown("SPACE")) && trex.y >= height-120) {
-trex.velocityY = -10;
-touches = [];
-}
-  trex.debug = false;
- 
-    
-  trex.setCollider("circle",0,0,39);
+    ground.velocityX = -(6 + 2*score/300);
   
     if(keyDown("space") && trex.y >= 159) {
       trex.velocityY = -12;
     }
-    
+
+    trex.dubeg = true;
+  
     trex.velocityY = trex.velocityY + 0.8
   
     if (ground.x < 0){
@@ -125,11 +114,10 @@ touches = [];
     obstaclesGroup.setLifetimeEach(-1);
     cloudsGroup.setLifetimeEach(-1);
     
-    if(mousePressedOver(restart)) {
+   if(mousePressedOver(restart)) {
       reset();
     }
   }
-  
   
   
   drawSprites();
@@ -161,7 +149,7 @@ function spawnObstacles() {
   if(frameCount % 60 === 0) {
     var obstacle = createSprite(600,165,10,40);
     //obstacle.debug = true;
-    obstacle.velocityX = -(6 + 3*score/100);
+    obstacle.velocityX = -(6 + 2*score/300);
     
     //generate random obstacles
     var rand = Math.round(random(1,6));
